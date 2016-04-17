@@ -30,7 +30,7 @@ class Connection
 
     protected function connect()
     {
-        $dsn = "{$this->config['driver']}:host={$this->config['host']};dbname={$this->config['database']};charset={$this->config['charset']}";
+        $dsn = "{$this->config['driver']}:host={$this->config['host']};port={$this->config['port']};dbname={$this->config['database']};charset={$this->config['charset']}";
         $user = $this->config['username'];
         $pass = $this->config['password'];
         $options = [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION];
