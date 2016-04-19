@@ -1,11 +1,25 @@
+body {
+    background: url('bg.png');
+    font-family: "Helvetica Neue", Helvetica, Arial;
+}
+
 .block {
-    border: 1px solid grey;
-    margin: 15px;
-    padding: 5px;
+    background: #fff;
+    box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.4), 0 4px 20px rgba(0, 0, 0, 0.33);
+    display: table;
+    margin: 15px 0 25px;
+    padding: 10px 15px;
+
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
 }
 
 .title {
+    color: #333333;
+    font-size: 24px;
     font-weight: bold;
+    margin-bottom: 5px;
     text-align: left;
 }
 

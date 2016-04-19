@@ -77,22 +77,20 @@ if ($ReadConnection instanceof Database\Connection) {
 
 <div style="text-align:center; width:600px; margin:50px auto;">
     <div class="block">
-        <div class="title">Add User:</div>
-        <?php if (!empty($new_user_id)): ?>
-            <div>new record id: <?=$new_user_id ?></div>
-        <?php endif; ?>
+        <div class="title">Add User</div>
 
         <form action="" method="get">
             <div>Name: <input type="text" name="user[name]" value=""></div>
             <button type="submit">add new user</button>
         </form>
+
+        <?php if (!empty($new_user_id)): ?>
+            <div>new record id: <?=$new_user_id ?></div>
+        <?php endif; ?>
     </div>
 
     <div class="block">
-        <div class="title">Add Accommodation:</div>
-        <?php if (!empty($new_accommodation_id)): ?>
-            <div>new record id: <?=$new_accommodation_id ?></div>
-        <?php endif; ?>
+        <div class="title">Add Accommodation</div>
 
         <form action="" method="get">
             <div>Host user id: <input type="text" name="accommodation[host_user_id]" value=""></div>
@@ -119,13 +117,14 @@ if ($ReadConnection instanceof Database\Connection) {
             </div>
             <button type="submit">add new accommodation</button>
         </form>
+
+        <?php if (!empty($new_accommodation_id)): ?>
+            <div>new record id: <?=$new_accommodation_id ?></div>
+        <?php endif; ?>
     </div>
 
     <div class="block">
-        <div class="title">Add Reservation:</div>
-        <?php if (!empty($new_reservation_id)): ?>
-            <div>new record id: <?=$new_reservation_id ?></div>
-        <?php endif; ?>
+        <div class="title">Add Reservation</div>
 
         <form action="" method="get">
             <div>Accommodation id: <input type="text" name="reservation[accommodation_id]" value=""></div>
@@ -136,22 +135,14 @@ if ($ReadConnection instanceof Database\Connection) {
             </div>
             <button type="submit">add new reservation</button>
         </form>
+
+        <?php if (!empty($new_reservation_id)): ?>
+            <div>new record id: <?=$new_reservation_id ?></div>
+        <?php endif; ?>
     </div>
 
     <div class="block">
-        <div class="title">Find Accommodation:</div>
-        <?php if (!empty($search_results)): ?>
-            <div>
-                Search Results:
-                <table cellpadding="0" cellspacing="0" style="text-align:left;">
-                    <?php foreach ($search_results as $row): ?>
-                        <tr><td><pre><?=print_r($row, 1) ?></pre></td></tr>
-                    <?php endforeach; ?>
-                </table>
-            </div>
-        <?php elseif (!empty($_GET['search'])): ?>
-            <div>Sorry, no results</div>
-        <?php endif; ?>
+        <div class="title">Find Accommodation</div>
 
         <form action="" method="get">
             <div>City:
@@ -179,6 +170,19 @@ if ($ReadConnection instanceof Database\Connection) {
             </div>
             <button type="submit">search</button>
         </form>
+
+        <?php if (!empty($search_results)): ?>
+            <div style="margin-top:15px;">
+                <div class="title">Search Results</div>
+                <table cellpadding="0" cellspacing="0" style="text-align:left;">
+                    <?php foreach ($search_results as $row): ?>
+                        <tr><td><pre><?=print_r($row, 1) ?></pre></td></tr>
+                    <?php endforeach; ?>
+                </table>
+            </div>
+        <?php elseif (!empty($_GET['search'])): ?>
+            <div>Sorry, no results</div>
+        <?php endif; ?>
     </div>
 </div>
 </body>
