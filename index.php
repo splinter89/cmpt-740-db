@@ -3,6 +3,7 @@
 require_once 'inc/common.php';
 
 $used_connection_name = '';
+$db_error = '';
 if (!empty($_GET)) {
     $now = date('Y-m-d H:i:s');
     if (!empty($_GET['user'])) {
@@ -11,7 +12,11 @@ if (!empty($_GET)) {
 
         $new_user = $_GET['user'];
         $new_user['date_created'] = $now;
-        $new_user_id = $WriteConnection->insert(INSERT_USER_QUERY, $new_user);
+        if (empty($new_user['name'])) {
+            $db_error = 'User name is empty';
+        } else {
+            $new_user_id = $WriteConnection->insert(INSERT_USER_QUERY, $new_user);
+        }
     } elseif (!empty($_GET['accommodation'])) {
         $WriteConnection = DB::connection(WRITE_DB_CONNECTION_NAME);
         $used_connection_name = WRITE_DB_CONNECTION_NAME;
@@ -28,7 +33,13 @@ if (!empty($_GET)) {
             $new_accommodation['has_tv'] = 0;
         }
         $new_accommodation['date_created'] = $now;
-        $new_accommodation_id = $WriteConnection->insert(INSERT_ACCOMMODATION_QUERY, $new_accommodation);
+        if (empty($new_accommodation['address'])) {
+            $db_error = 'No address';
+        } elseif (empty($new_accommodation['price'])) {
+            $db_error = 'No price';
+        } else {
+            $new_accommodation_id = $WriteConnection->insert(INSERT_ACCOMMODATION_QUERY, $new_accommodation);
+        }
     } elseif (!empty($_GET['reservation'])) {
         $WriteConnection = DB::connection(WRITE_DB_CONNECTION_NAME);
         $used_connection_name = WRITE_DB_CONNECTION_NAME;
@@ -44,6 +55,8 @@ if (!empty($_GET)) {
         $used_connection_name = READ_DB_CONNECTION_NAME;
 
         $search_params = $_GET['search'];
+        $search_params['price_from'] = (float)$search_params['price_from'];
+        $search_params['price_to'] = (float)$search_params['price_to'];
 
         $query = 'SELECT * FROM accommodation WHERE city = :city AND price >= :price_from AND price <= :price_to AND type = :type'
             .(!empty($search_params['has_washer']) ? ' AND has_washer = 1' : '')
@@ -54,12 +67,10 @@ if (!empty($_GET)) {
 }
 
 $cities = readArrayFromFile('samples/cities.txt');
-if ($ReadConnection instanceof Database\Connection) {
+if (isset($ReadConnection) && $ReadConnection instanceof Database\Connection && $ReadConnection->getLastError()) {
     $db_error = $ReadConnection->getLastError();
-} elseif ($WriteConnection instanceof Database\Connection) {
+} elseif (isset($WriteConnection) && $WriteConnection instanceof Database\Connection && $WriteConnection->getLastError()) {
     $db_error = $WriteConnection->getLastError();
-} else {
-    $db_error = '';
 }
 
 ?><!DOCTYPE html>
@@ -72,7 +83,7 @@ if ($ReadConnection instanceof Database\Connection) {
 
 <div class="connection_name notify">DB: <?=$used_connection_name ?></div>
 <?php if (!empty($db_error)): ?>
-    <div class="connection_error notify notify-red"><?=$db_error ?></div>
+    <div class="connection_error notify notify-red">ERROR: <?=$db_error ?></div>
 <?php endif; ?>
 
 <div style="text-align:center; width:600px; margin:50px auto;">
@@ -130,7 +141,8 @@ if ($ReadConnection instanceof Database\Connection) {
             <div>Accommodation id: <input type="text" name="reservation[accommodation_id]" value=""></div>
             <div>Guest user id: <input type="text" name="reservation[guest_user_id]" value=""></div>
             <div>Dates:
-                <input type="date" name="reservation[date_from]" value="">&ndash;
+                <input type="date" name="reservation[date_from]" value="">
+                &ndash;
                 <input type="date" name="reservation[date_to]" value="">
             </div>
             <button type="submit">add new reservation</button>
@@ -153,8 +165,9 @@ if ($ReadConnection instanceof Database\Connection) {
                 </select>
             </div>
             <div>Price:
-                <input type="text" name="search[price_from]" value="">&ndash;
-                <input type="text" name="search[price_to]" value="">
+                <input type="text" name="search[price_from]" value="" style="width:100px;">
+                &ndash;
+                <input type="text" name="search[price_to]" value="" style="width:100px;">
             </div>
             <div>Type:
                 <select name="search[type]">
