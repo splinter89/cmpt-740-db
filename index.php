@@ -184,18 +184,18 @@ if (isset($ReadConnection) && $ReadConnection instanceof Database\Connection && 
             <button type="submit">search</button>
         </form>
 
-        <?php if (!empty($search_results)): ?>
-            <div style="margin-top:15px;">
-                <div class="title">Search Results</div>
+        <div style="margin-top:35px;">
+            <?php if (!empty($search_results)): ?>
+                <div class="title">Search Results: <?=count($search_results) ?></div>
                 <table cellpadding="0" cellspacing="0" style="text-align:left;">
                     <?php foreach ($search_results as $row): ?>
                         <tr><td><pre><?=print_r($row, 1) ?></pre></td></tr>
                     <?php endforeach; ?>
                 </table>
-            </div>
-        <?php elseif (!empty($_GET['search'])): ?>
-            <div>Sorry, no results</div>
-        <?php endif; ?>
+            <?php elseif (!empty($_GET['search'])): ?>
+                <div style="text-align:left;">Sorry, no results</div>
+            <?php endif; ?>
+        </div>
     </div>
 </div>
 </body>
