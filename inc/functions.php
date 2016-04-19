@@ -1,5 +1,18 @@
 <?php
 
+function chooseConnectionName($readonly)
+{
+    if (!$readonly) return 'master';
+
+    $available = [
+        'master',
+        'slave1',
+        //'slave4_vm',
+    ];
+    $random_db = pickFrom($available);
+    return $random_db;
+}
+
 function trueWithProbability($probability)
 {
     $probability = max(min($probability, 1), 0);

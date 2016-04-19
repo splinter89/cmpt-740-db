@@ -1,7 +1,7 @@
 <?php
 
 require_once 'inc/common.php';
-$Connection = DB::connection();
+$ReadConnection = DB::connection(READ_DB_CONNECTION_NAME);
 
 $price_from = mt_rand(700, 900);
 $price_to = $price_from + mt_rand(10, 300);
@@ -18,7 +18,7 @@ $search_params = [
     'price_to' => $price_to,
     'type' => pickFrom(['entire_home', 'private_room', 'shared_room']),
 ];
-$results = $Connection->select($query, $search_params);
+$results = $ReadConnection->select($query, $search_params);
 
 if ($require_washer) {
     $search_params['has_washer'] = 1;

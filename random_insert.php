@@ -1,7 +1,7 @@
 <?php
 
 require_once 'inc/common.php';
-$Connection = DB::connection();
+$WriteConnection = DB::connection(WRITE_DB_CONNECTION_NAME);
 
 $is_house = trueWithProbability(0.5);
 $city = pickFromFile('samples/cities.txt');
@@ -21,8 +21,8 @@ $date_to = $date_to->add(new DateInterval('P'.mt_rand(2, 120).'D'));
 
 $now = date('Y-m-d H:i:s');
 
-$host_user_id = handleRandomUserName(pickFromFile('samples/names.txt'), $Connection);
-$guest_user_id = handleRandomUserName(pickFromFile('samples/names.txt'), $Connection);
+$host_user_id = handleRandomUserName(pickFromFile('samples/names.txt'), $WriteConnection);
+$guest_user_id = handleRandomUserName(pickFromFile('samples/names.txt'), $WriteConnection);
 
 $accommodation = [
     'host_user_id' => $host_user_id,
@@ -35,7 +35,7 @@ $accommodation = [
     'has_tv' => $has_tv,
     'date_created' => $now,
 ];
-$accommodation_id = $Connection->insert(INSERT_ACCOMMODATION_QUERY, $accommodation);
+$accommodation_id = $WriteConnection->insert(INSERT_ACCOMMODATION_QUERY, $accommodation);
 
 $reservation = [
     'accommodation_id' => $accommodation_id,
@@ -44,7 +44,7 @@ $reservation = [
     'date_to' => $date_to->format('Y-m-d'),
     'date_created' => $now,
 ];
-$reservation_id = $Connection->insert(INSERT_RESERVATION_QUERY, $reservation);
+$reservation_id = $WriteConnection->insert(INSERT_RESERVATION_QUERY, $reservation);
 
 echo json_encode([
     'host_user_id' => $host_user_id,

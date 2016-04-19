@@ -1,15 +1,21 @@
 <?php
 
 require_once 'inc/common.php';
-$Connection = DB::connection();
 
+$used_connection_name = '';
 if (!empty($_GET)) {
     $now = date('Y-m-d H:i:s');
     if (!empty($_GET['user'])) {
+        $WriteConnection = DB::connection(WRITE_DB_CONNECTION_NAME);
+        $used_connection_name = WRITE_DB_CONNECTION_NAME;
+
         $new_user = $_GET['user'];
         $new_user['date_created'] = $now;
-        $new_user_id = $Connection->insert(INSERT_USER_QUERY, $new_user);
+        $new_user_id = $WriteConnection->insert(INSERT_USER_QUERY, $new_user);
     } elseif (!empty($_GET['accommodation'])) {
+        $WriteConnection = DB::connection(WRITE_DB_CONNECTION_NAME);
+        $used_connection_name = WRITE_DB_CONNECTION_NAME;
+
         $new_accommodation = $_GET['accommodation'];
         $new_accommodation['price'] = (float)$new_accommodation['price'];
         if (empty($new_accommodation['has_washer'])) {
@@ -22,22 +28,28 @@ if (!empty($_GET)) {
             $new_accommodation['has_tv'] = 0;
         }
         $new_accommodation['date_created'] = $now;
-        $new_accommodation_id = $Connection->insert(INSERT_ACCOMMODATION_QUERY, $new_accommodation);
+        $new_accommodation_id = $WriteConnection->insert(INSERT_ACCOMMODATION_QUERY, $new_accommodation);
     } elseif (!empty($_GET['reservation'])) {
+        $WriteConnection = DB::connection(WRITE_DB_CONNECTION_NAME);
+        $used_connection_name = WRITE_DB_CONNECTION_NAME;
+
         $new_reservation = $_GET['reservation'];
         $new_reservation['date_from'] = date_create($new_reservation['date_from'])->format('Y-m-d');
         $new_reservation['date_to'] = date_create($new_reservation['date_to'])->format('Y-m-d');
         $new_reservation['date_to'] = max($new_reservation['date_from'], $new_reservation['date_to']);
         $new_reservation['date_created'] = $now;
-        $new_reservation_id = $Connection->insert(INSERT_RESERVATION_QUERY, $new_reservation);
+        $new_reservation_id = $WriteConnection->insert(INSERT_RESERVATION_QUERY, $new_reservation);
     } elseif (!empty($_GET['search'])) {
+        $ReadConnection = DB::connection(READ_DB_CONNECTION_NAME);
+        $used_connection_name = READ_DB_CONNECTION_NAME;
+
         $search_params = $_GET['search'];
 
         $query = 'SELECT * FROM accommodation WHERE city = :city AND price >= :price_from AND price <= :price_to AND type = :type'
             .(!empty($search_params['has_washer']) ? ' AND has_washer = 1' : '')
             .(!empty($search_params['has_wifi']) ? ' AND has_wifi = 1' : '')
             .' ORDER BY date_created DESC';
-        $search_results = $Connection->select($query, $search_params);
+        $search_results = $ReadConnection->select($query, $search_params);
     }
 }
 
@@ -59,6 +71,15 @@ $cities = readArrayFromFile('samples/cities.txt');
             text-align: left;
         }
 
+        .connection_name {
+            color: #ff4030;
+            font-size: 16px;
+            font-weight: bold;
+            position: fixed;
+            top: 15px;
+            left: 10px;
+        }
+
         input, button {
             margin: 5px 0;
         }
@@ -70,6 +91,7 @@ $cities = readArrayFromFile('samples/cities.txt');
     </style>
 </head>
 <body>
+<div class="connection_name">DB: <?=$used_connection_name ?></div>
 <div style="text-align:center; width:600px; margin:50px auto;">
     <div class="block">
         <div class="title">Add User:</div>
