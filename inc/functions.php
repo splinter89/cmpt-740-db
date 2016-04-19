@@ -14,15 +14,21 @@ function pickFrom(array $a)
     return $a[$k];
 }
 
-function pickFromFile($file)
+function readArrayFromFile($file)
 {
-    $a = [];
+    $res = [];
     foreach (explode("\n", file_get_contents($file)) as $line) {
         $line = trim($line);
         if (empty($line)) continue;
 
-        $a[] = $line;
+        $res[] = $line;
     }
+    return $res;
+}
+
+function pickFromFile($file)
+{
+    $a = readArrayFromFile($file);
     return pickFrom($a);
 }
 
