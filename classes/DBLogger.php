@@ -21,7 +21,7 @@ class DBLogger extends Logger
         $res = date('[d-M-Y H:i:s e]')." [$level] [client {$this->clientIp}] {$this->serverName}:{$this->serverIp}:{$this->connectionName}".PHP_EOL
             .$message;
         if (!empty($context)) {
-            $res .= PHP_EOL.$this->toString($context);
+            $res .= PHP_EOL.$this->toString($context).PHP_EOL;
 
             if (!empty($context['exception']) && ($context['exception'] instanceof Exception)) {
                 $backtrace = $this->getBacktrace($context['exception']);
