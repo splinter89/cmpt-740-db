@@ -7,7 +7,7 @@ function chooseConnectionName($readonly)
     $available = [
         'master',
         'slave1',
-        //'slave4_vm',
+        'slave4_vm',
     ];
     $random_db = pickFrom($available);
     return $random_db;
