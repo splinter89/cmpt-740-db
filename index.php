@@ -119,7 +119,7 @@ if (isset($ReadConnection) && $ReadConnection instanceof Database\Connection && 
         <div class="title">Add User</div>
 
         <form action="" method="get">
-            <div>Name: <input type="text" name="user[name]" value=""></div>
+            <div>Name: <input type="text" name="user[name]" value="<?=$_GET['user']['name'] ?>"></div>
             <button type="submit">add new user</button>
         </form>
 
@@ -132,27 +132,27 @@ if (isset($ReadConnection) && $ReadConnection instanceof Database\Connection && 
         <div class="title">Add Accommodation</div>
 
         <form action="" method="get">
-            <div>Host user id: <input type="text" name="accommodation[host_user_id]" value=""></div>
+            <div>Host user id: <input type="text" name="accommodation[host_user_id]" value="<?=$_GET['accommodation']['host_user_id'] ?>"></div>
             <div>City:
                 <select name="accommodation[city]">
                     <?php foreach ($cities as $city): ?>
-                        <option value="<?=$city ?>"><?=$city ?></option>
+                        <option value="<?=$city ?>" <?=($city == $_GET['accommodation']['city'])?'selected="selected"':'' ?>><?=$city ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div>Address: <input type="text" name="accommodation[address]" value=""></div>
-            <div>Price: <input type="text" name="accommodation[price]" value=""></div>
+            <div>Address: <input type="text" name="accommodation[address]" value="<?=$_GET['accommodation']['address'] ?>"></div>
+            <div>Price: <input type="text" name="accommodation[price]" value="<?=$_GET['accommodation']['price'] ?>"></div>
             <div>Type:
                 <select name="accommodation[type]">
                     <?php foreach (['entire_home', 'private_room', 'shared_room'] as $type): ?>
-                        <option value="<?=$type ?>"><?=$type ?></option>
+                        <option value="<?=$type ?>" <?=($type == $_GET['accommodation']['type'])?'selected="selected"':'' ?>><?=$type ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
             <div>
-                <label><input type="checkbox" name="accommodation[has_washer]" value="1">washer</label>
-                <label><input type="checkbox" name="accommodation[has_wifi]" value="1">wifi</label>
-                <label><input type="checkbox" name="accommodation[has_tv]" value="1">tv</label>
+                <label><input type="checkbox" name="accommodation[has_washer]" value="1" <?=($_GET['accommodation']['has_washer'])?'checked="checked"':'' ?>>washer</label>
+                <label><input type="checkbox" name="accommodation[has_wifi]" value="1" <?=($_GET['accommodation']['has_wifi'])?'checked="checked"':'' ?>>wifi</label>
+                <label><input type="checkbox" name="accommodation[has_tv]" value="1" <?=($_GET['accommodation']['has_tv'])?'checked="checked"':'' ?>>tv</label>
             </div>
             <button type="submit">add new accommodation</button>
         </form>
@@ -166,12 +166,12 @@ if (isset($ReadConnection) && $ReadConnection instanceof Database\Connection && 
         <div class="title">Add Reservation</div>
 
         <form action="" method="get">
-            <div>Accommodation id: <input type="text" name="reservation[accommodation_id]" value=""></div>
-            <div>Guest user id: <input type="text" name="reservation[guest_user_id]" value=""></div>
+            <div>Accommodation id: <input type="text" name="reservation[accommodation_id]" value="<?=$_GET['reservation']['accommodation_id'] ?>"></div>
+            <div>Guest user id: <input type="text" name="reservation[guest_user_id]" value="<?=$_GET['reservation']['guest_user_id'] ?>"></div>
             <div>Dates:
-                <input type="date" name="reservation[date_from]" value="">
+                <input type="date" name="reservation[date_from]" value="<?=$_GET['reservation']['date_from'] ?>">
                 &ndash;
-                <input type="date" name="reservation[date_to]" value="">
+                <input type="date" name="reservation[date_to]" value="<?=$_GET['reservation']['date_to'] ?>">
             </div>
             <button type="submit">add new reservation</button>
         </form>
@@ -188,26 +188,26 @@ if (isset($ReadConnection) && $ReadConnection instanceof Database\Connection && 
             <div>City:
                 <select name="search[city]">
                     <?php foreach ($cities as $city): ?>
-                        <option value="<?=$city ?>"><?=$city ?></option>
+                        <option value="<?=$city ?>" <?=($city == $_GET['search']['city'])?'selected="selected"':'' ?>><?=$city ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
             <div>Price:
-                <input type="text" name="search[price_from]" value="" style="width:100px;">
+                <input type="text" name="search[price_from]" value="<?=$_GET['search']['price_from'] ?>" style="width:100px;">
                 &ndash;
-                <input type="text" name="search[price_to]" value="" style="width:100px;">
+                <input type="text" name="search[price_to]" value="<?=$_GET['search']['price_to'] ?>" style="width:100px;">
             </div>
             <div>Type:
                 <select name="search[type]">
                     <?php foreach (['entire_home', 'private_room', 'shared_room'] as $type): ?>
-                        <option value="<?=$type ?>"><?=$type ?></option>
+                        <option value="<?=$type ?>" <?=($type == $_GET['search']['type'])?'selected="selected"':'' ?>><?=$type ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
             <div>
-                <label><input type="checkbox" name="search[has_washer]" value="1">washer</label>
-                <label><input type="checkbox" name="search[has_wifi]" value="1">wifi</label>
-                <label><input type="checkbox" name="search[has_tv]" value="1">tv</label>
+                <label><input type="checkbox" name="search[has_washer]" value="1" <?=($_GET['search']['has_washer'])?'checked="checked"':'' ?>>washer</label>
+                <label><input type="checkbox" name="search[has_wifi]" value="1" <?=($_GET['search']['has_washer'])?'checked="checked"':'' ?>>wifi</label>
+                <label><input type="checkbox" name="search[has_tv]" value="1" <?=($_GET['search']['has_washer'])?'checked="checked"':'' ?>>tv</label>
             </div>
             <button type="submit">search</button>
         </form>
