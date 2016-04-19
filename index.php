@@ -4,7 +4,6 @@ require_once 'inc/common.php';
 $Connection = DB::connection();
 
 if (!empty($_GET)) {
-//    var_dump($_GET);if(1)die;
     $now = date('Y-m-d H:i:s');
     if (!empty($_GET['user'])) {
         $new_user = $_GET['user'];
@@ -24,13 +23,21 @@ if (!empty($_GET)) {
         }
         $new_accommodation['date_created'] = $now;
         $new_accommodation_id = $Connection->insert(INSERT_ACCOMMODATION_QUERY, $new_accommodation);
-    } elseif ($_GET['reservation']) {
+    } elseif (!empty($_GET['reservation'])) {
         $new_reservation = $_GET['reservation'];
         $new_reservation['date_from'] = date_create($new_reservation['date_from'])->format('Y-m-d');
         $new_reservation['date_to'] = date_create($new_reservation['date_to'])->format('Y-m-d');
         $new_reservation['date_to'] = max($new_reservation['date_from'], $new_reservation['date_to']);
         $new_reservation['date_created'] = $now;
         $new_reservation_id = $Connection->insert(INSERT_RESERVATION_QUERY, $new_reservation);
+    } elseif (!empty($_GET['search'])) {
+        $search_params = $_GET['search'];
+
+        $query = 'SELECT * FROM accommodation WHERE city = :city AND price >= :price_from AND price <= :price_to AND type = :type'
+            .(!empty($search_params['has_washer']) ? ' AND has_washer = 1' : '')
+            .(!empty($search_params['has_wifi']) ? ' AND has_wifi = 1' : '')
+            .' ORDER BY date_created DESC';
+        $search_results = $Connection->select($query, $search_params);
     }
 }
 
@@ -63,12 +70,13 @@ $cities = readArrayFromFile('samples/cities.txt');
     </style>
 </head>
 <body>
-<div style="text-align:center; width:600px; margin:200px auto 0;">
+<div style="text-align:center; width:600px; margin:50px auto;">
     <div class="block">
         <div class="title">Add User:</div>
         <?php if (!empty($new_user_id)): ?>
             <div>new record id: <?=$new_user_id ?></div>
         <?php endif; ?>
+
         <form action="" method="get">
             <div>Name: <input type="text" name="user[name]" value=""></div>
             <button type="submit">add new user</button>
@@ -80,6 +88,7 @@ $cities = readArrayFromFile('samples/cities.txt');
         <?php if (!empty($new_accommodation_id)): ?>
             <div>new record id: <?=$new_accommodation_id ?></div>
         <?php endif; ?>
+
         <form action="" method="get">
             <div>Host user id: <input type="text" name="accommodation[host_user_id]" value=""></div>
             <div>City:
@@ -112,6 +121,7 @@ $cities = readArrayFromFile('samples/cities.txt');
         <?php if (!empty($new_reservation_id)): ?>
             <div>new record id: <?=$new_reservation_id ?></div>
         <?php endif; ?>
+
         <form action="" method="get">
             <div>Accommodation id: <input type="text" name="reservation[accommodation_id]" value=""></div>
             <div>Guest user id: <input type="text" name="reservation[guest_user_id]" value=""></div>
@@ -124,7 +134,46 @@ $cities = readArrayFromFile('samples/cities.txt');
     </div>
 
     <div class="block">
-        Find Accommodation:
+        <div class="title">Find Accommodation:</div>
+        <?php if (!empty($search_results)): ?>
+            <div>
+                Search Results:
+                <table cellpadding="0" cellspacing="0" style="text-align:left;">
+                    <?php foreach ($search_results as $row): ?>
+                        <tr><td><pre><?=print_r($row, 1) ?></pre></td></tr>
+                    <?php endforeach; ?>
+                </table>
+            </div>
+        <?php elseif (!empty($_GET['search'])): ?>
+            <div>Sorry, no results</div>
+        <?php endif; ?>
+
+        <form action="" method="get">
+            <div>City:
+                <select name="search[city]">
+                    <?php foreach ($cities as $city): ?>
+                        <option value="<?=$city ?>"><?=$city ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div>Price:
+                <input type="text" name="search[price_from]" value="">&ndash;
+                <input type="text" name="search[price_to]" value="">
+            </div>
+            <div>Type:
+                <select name="search[type]">
+                    <?php foreach (['entire_home', 'private_room', 'shared_room'] as $type): ?>
+                        <option value="<?=$type ?>"><?=$type ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div>
+                <label><input type="checkbox" name="search[has_washer]" value="1">washer</label>
+                <label><input type="checkbox" name="search[has_wifi]" value="1">wifi</label>
+                <label><input type="checkbox" name="search[has_tv]" value="1">tv</label>
+            </div>
+            <button type="submit">search</button>
+        </form>
     </div>
 </div>
 </body>
