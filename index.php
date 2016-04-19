@@ -59,39 +59,12 @@ $cities = readArrayFromFile('samples/cities.txt');
 <html>
 <head>
     <title>Replication Test Project</title>
-    <style type="text/css">
-        .block {
-            border: 1px solid grey;
-            margin: 15px;
-            padding: 5px;
-        }
-
-        .title {
-            font-weight: bold;
-            text-align: left;
-        }
-
-        .connection_name {
-            color: #ff4030;
-            font-size: 16px;
-            font-weight: bold;
-            position: fixed;
-            top: 15px;
-            left: 10px;
-        }
-
-        input, button {
-            margin: 5px 0;
-        }
-
-        label {
-            margin-right: 15px;
-        }
-
-    </style>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-<div class="connection_name">DB: <?=$used_connection_name ?></div>
+
+<div class="connection_name notify">DB: <?=$used_connection_name ?></div>
+
 <div style="text-align:center; width:600px; margin:50px auto;">
     <div class="block">
         <div class="title">Add User:</div>

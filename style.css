@@ -1,0 +1,44 @@
+.block {
+    border: 1px solid grey;
+    margin: 15px;
+    padding: 5px;
+}
+
+.title {
+    font-weight: bold;
+    text-align: left;
+}
+
+.connection_name, .connection_error {
+    left: 10px;
+    position: fixed;
+    top: 15px;
+}
+
+input, button {
+    margin: 5px 0;
+}
+
+label {
+    margin-right: 15px;
+}
+
+/**********************************************************************************************************************/
+.notify {
+    background-color: #e3f7fc;
+    color: #555;
+    border: .1em solid #8ed9f6;
+    border-radius: 10px;
+    font-family: Tahoma, Geneva, Arial, sans-serif;
+    font-size: 1.1em;
+    padding: 10px 10px 10px 10px;
+    margin: 10px;
+    cursor: default;
+}
+
+.notify-red {
+    background: #ffecec;
+    border-color: #fad9d7;
+}
+
+/**********************************************************************************************************************/
