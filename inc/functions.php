@@ -1,13 +1,15 @@
 <?php
 
-function chooseConnectionName($readonly)
+function chooseConnectionName($readonly, $city = '')
 {
-    if (!$readonly) return 'master';
+    if (!$readonly) {
+        return ($city == 'Vancouver') ? 'master1' : 'master2';
+    }
 
     $available = [
-        'master',
-        'slave1',
-        'slave4_vm',
+        'master1',
+        'master2',
+        'slave',
     ];
     $random_db = pickFrom($available);
     return $random_db;

@@ -18,6 +18,7 @@ if (!empty($_GET)) {
             $new_user_id = $WriteConnection->insert(INSERT_USER_QUERY, $new_user);
         }
     } elseif (!empty($_GET['accommodation'])) {
+        define('WRITE_DB_CONNECTION_NAME', chooseConnectionName(false, $_GET['accommodation']['city']));
         $WriteConnection = DB::connection(WRITE_DB_CONNECTION_NAME);
         $used_connection_name = WRITE_DB_CONNECTION_NAME;
 

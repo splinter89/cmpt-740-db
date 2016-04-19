@@ -3,7 +3,7 @@
 return [
     'default' => 'master',
     'connections' => [
-        'master' => [
+        'master1' => [
             'driver' => 'mysql',
             'host' => '127.0.0.1',
             'port' => '3306',
@@ -12,7 +12,7 @@ return [
             'password' => '',
             'charset' => 'utf8',
         ],
-        'slave1' => [
+        'slave' => [
             'driver' => 'mysql',
             'host' => '127.0.0.1',
             'port' => '3307',
@@ -21,7 +21,7 @@ return [
             'password' => '',
             'charset' => 'utf8',
         ],
-        'slave4_vm' => [
+        'master2' => [
             'driver' => 'mysql',
             'host' => '127.0.0.1',
             'port' => '3308', // forwarded
