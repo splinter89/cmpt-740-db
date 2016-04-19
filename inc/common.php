@@ -5,5 +5,6 @@ Autoloader::addNamespace('', dirname(__DIR__).DIRECTORY_SEPARATOR.'classes');
 require_once 'functions.php';
 require_once 'queries.php';
 
+ini_set('error_log', dirname(__DIR__).DIRECTORY_SEPARATOR.'error.log');
 Log::setUp(ini_get('error_log'));
 DB::setUp(require 'db_config.php', 'test_server');
