@@ -49,7 +49,23 @@ if (!empty($_GET)) {
         $new_reservation['date_to'] = date_create($new_reservation['date_to'])->format('Y-m-d');
         $new_reservation['date_to'] = max($new_reservation['date_from'], $new_reservation['date_to']);
         $new_reservation['date_created'] = $now;
-        $new_reservation_id = $WriteConnection->insert(INSERT_RESERVATION_QUERY, $new_reservation);
+
+        $existing_reservations = $WriteConnection->select('SELECT date_from, date_to FROM reservation WHERE accommodation_id = :accommodation_id', [
+            'accommodation_id' => $new_reservation['accommodation_id'],
+        ]);
+        $got_conflict_reservations = false;
+        foreach ($existing_reservations as $one) {
+            if (!(($new_reservation['date_to'] < $one['date_from']) || ($one['date_to'] < $new_reservation['date_from']))) {
+                $got_conflict_reservations = true;
+                break;
+            }
+        }
+
+        if ($got_conflict_reservations) {
+            $db_error = 'Got conflicting reservations';
+        } else {
+            $new_reservation_id = $WriteConnection->insert(INSERT_RESERVATION_QUERY, $new_reservation);
+        }
     } elseif (!empty($_GET['search'])) {
         $ReadConnection = DB::connection(READ_DB_CONNECTION_NAME);
         $used_connection_name = READ_DB_CONNECTION_NAME;
