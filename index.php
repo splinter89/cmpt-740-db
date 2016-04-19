@@ -65,7 +65,7 @@ if ($ReadConnection instanceof Database\Connection) {
 ?><!DOCTYPE html>
 <html>
 <head>
-    <title>Replication Test Project</title>
+    <title>Replication Project</title>
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
