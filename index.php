@@ -57,8 +57,16 @@ if (!empty($_GET)) {
         $search_params = $_GET['search'];
         $search_params['price_from'] = (float)$search_params['price_from'];
         $search_params['price_to'] = (float)$search_params['price_to'];
+        if (empty($search_params['price_from'])) {
+            unset($search_params['price_from']);
+        }
+        if (empty($search_params['price_to'])) {
+            unset($search_params['price_to']);
+        }
 
-        $query = 'SELECT * FROM accommodation WHERE city = :city AND price >= :price_from AND price <= :price_to AND type = :type'
+        $query = 'SELECT * FROM accommodation WHERE city = :city AND type = :type'
+            .(!empty($search_params['price_from']) ? ' AND price >= :price_from' : '')
+            .(!empty($search_params['price_to']) ? ' AND price <= :price_to' : '')
             .(!empty($search_params['has_washer']) ? ' AND has_washer = 1' : '')
             .(!empty($search_params['has_wifi']) ? ' AND has_wifi = 1' : '')
             .' ORDER BY date_created DESC';
