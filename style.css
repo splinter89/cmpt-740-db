@@ -15,6 +15,11 @@
     top: 15px;
 }
 
+.connection_error {
+    top: 70px;
+    width: 500px;
+}
+
 input, button {
     margin: 5px 0;
 }

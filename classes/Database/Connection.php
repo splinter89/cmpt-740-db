@@ -20,6 +20,7 @@ class Connection
      */
     public $pdo;
     protected $fetchStyle = \PDO::FETCH_ASSOC;
+    protected $lastError = '';
 
     public function __construct(array $config, LoggerInterface $logger)
     {
@@ -91,8 +92,14 @@ class Connection
                 $context['bindings'] = $bindings;
             }
             $this->logger->error($e->getMessage(), $context);
+            $this->lastError = $e->getMessage();
         }
         return $res;
+    }
+
+    public function getLastError()
+    {
+        return $this->lastError;
     }
 
     /**

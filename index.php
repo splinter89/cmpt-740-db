@@ -54,6 +54,13 @@ if (!empty($_GET)) {
 }
 
 $cities = readArrayFromFile('samples/cities.txt');
+if ($ReadConnection instanceof Database\Connection) {
+    $db_error = $ReadConnection->getLastError();
+} elseif ($WriteConnection instanceof Database\Connection) {
+    $db_error = $WriteConnection->getLastError();
+} else {
+    $db_error = '';
+}
 
 ?><!DOCTYPE html>
 <html>
@@ -64,6 +71,9 @@ $cities = readArrayFromFile('samples/cities.txt');
 <body>
 
 <div class="connection_name notify">DB: <?=$used_connection_name ?></div>
+<?php if (!empty($db_error)): ?>
+    <div class="connection_error notify notify-red"><?=$db_error ?></div>
+<?php endif; ?>
 
 <div style="text-align:center; width:600px; margin:50px auto;">
     <div class="block">
