@@ -31,3 +31,5 @@ DELETE FROM `user`;
 ALTER TABLE `reservation` AUTO_INCREMENT = 1;
 ALTER TABLE `accommodation` AUTO_INCREMENT = 1;
 ALTER TABLE `user` AUTO_INCREMENT = 1;
+
+C:\wamp\bin\mysql\mysql5.7.9\bin\mysqlbinlog -v --base64-output=DECODE-ROWS C:\wamp\bin\mysql\replication_project\data_master\mysql-bin.000017
