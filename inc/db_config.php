@@ -31,6 +31,5 @@ return [
             'charset' => 'utf8',
         ],
     ],
-    //'log' => 'C:/wamp/logs/php_error.log',
-    'log' => 'C:/D/www/740_project/error.log',
+    'log' => ini_get('error_log'),
 ];
