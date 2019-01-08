@@ -10,3 +10,4 @@ Log::setUp(ini_get('error_log'));
 DB::setUp(require 'db_config.php', 'test_server');
 
 define('READ_DB_CONNECTION_NAME', chooseConnectionName(true));
+define('WRITE_DB_CONNECTION_NAME', chooseConnectionName(false, $_GET['accommodation']['city']));
