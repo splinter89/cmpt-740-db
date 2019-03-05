@@ -26,6 +26,7 @@ class UserController extends BaseController
 
     public function create(Request $request): Response
     {
+        $this->userRepository->logQueries();
         $post = $request->getParsedBody();
 
         $keys = ['name'];
@@ -42,7 +43,7 @@ class UserController extends BaseController
         }
 
         return $this->render('users/index.html.twig', [
-            'used_connection_name' => 'master',
+            'used_connections' => $this->userRepository->getUsedConnections(),
             'db_error' => $db_error,
             'user' => $fields,
             'new_user_id' => $new_user_id,

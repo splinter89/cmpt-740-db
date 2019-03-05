@@ -26,6 +26,7 @@ class ReservationController extends BaseController
 
     public function create(Request $request): Response
     {
+        $this->reservationRepository->logQueries();
         $post = $request->getParsedBody();
 
         $keys = [
@@ -61,7 +62,7 @@ class ReservationController extends BaseController
         }
 
         return $this->render('reservations/index.html.twig', [
-            'used_connection_name' => 'master',
+            'used_connections' => $this->reservationRepository->getUsedConnections(),
             'db_error' => $db_error,
             'reservation' => $fields,
             'new_reservation_id' => $new_reservation_id,

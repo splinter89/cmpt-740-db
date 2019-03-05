@@ -53,11 +53,23 @@ $containerBuilder = (new ContainerBuilder)
         UserRepository::class => create()->constructor(get(Atlas::class)),
 
         Atlas::class => function (ContainerInterface $c) {
-            return Atlas::new(
-                $c->get('db.dsn.default'),
+            $builder = new AtlasBuilder(
+                $c->get('db.dsn.default'), // not used unless no read/write connections found
                 $c->get('db.username'),
                 $c->get('db.password')
             );
+            foreach ($c->get('db.dsn.production') as $name => $dsn) {
+                $factory = Connection::factory(
+                    $dsn,
+                    $c->get('db.username'),
+                    $c->get('db.password')
+                );
+                $builder->getConnectionLocator()->setReadFactory($name, $factory);
+                if (strpos($name, 'master') !== false) {
+                    $builder->getConnectionLocator()->setWriteFactory($name, $factory);
+                }
+            }
+            return $builder->newAtlas();
         },
         RandomQueryGenerator::class => create()->constructor(
             get(UserRepository::class),
@@ -76,6 +88,11 @@ $containerBuilder = (new ContainerBuilder)
         },
 
         'db.dsn.default' => string('mysql:host={db.host};dbname={db.name};charset=utf8'),
+        'db.dsn.production' => [
+            'master1' => string('{db.dsn.default};port=3306'),
+            'master2' => string('{db.dsn.default};port=3308'), // the port is forwarded to VM
+            'slave' => string('{db.dsn.default};port=3307'),
+        ],
         'db.host' => 'localhost',
         'db.name' => '740_project',
         'db.password' => '...',

@@ -29,6 +29,7 @@ class AccommodationController extends BaseController
 
     public function create(Request $request): Response
     {
+        $this->accommodationRepository->logQueries();
         $post = $request->getParsedBody();
 
         $keys = [
@@ -57,7 +58,7 @@ class AccommodationController extends BaseController
         }
 
         return $this->render('accommodations/index.html.twig', [
-            'used_connection_name' => 'master',
+            'used_connections' => $this->accommodationRepository->getUsedConnections(),
             'db_error' => $db_error,
             'cities' => \App\Samples::CITIES,
             'types' => ['entire_home', 'private_room', 'shared_room'],
@@ -68,6 +69,7 @@ class AccommodationController extends BaseController
 
     public function search(Request $request): Response
     {
+        $this->accommodationRepository->logQueries();
         $params = $request->getQueryParams();
 
         $search_params = [];
@@ -98,7 +100,7 @@ class AccommodationController extends BaseController
         }
 
         return $this->render('accommodations/search.html.twig', [
-            'used_connection_name' => 'master',
+            'used_connections' => $this->accommodationRepository->getUsedConnections(),
             'cities' => \App\Samples::CITIES,
             'types' => ['entire_home', 'private_room', 'shared_room'],
             'search' => $search_params,
