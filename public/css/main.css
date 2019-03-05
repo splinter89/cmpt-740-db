@@ -1,13 +1,19 @@
 body {
-    background: url('bg.png');
-    font-family: "Helvetica Neue", Helvetica, Arial;
+    background: url('/img/bg.png');
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.main-container {
+    margin: 50px auto;
+    text-align: center;
+    width: 600px;
 }
 
 .block {
     background: #fff;
     box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.4), 0 4px 20px rgba(0, 0, 0, 0.33);
     display: table;
-    margin: 15px 0 25px;
+    margin: 15px auto 25px;
     padding: 10px 15px;
     text-align: right;
 
@@ -33,6 +39,14 @@ body {
 .connection_error {
     top: 70px;
     max-width: 500px;
+}
+
+.back-link {
+    margin-top: 15px;
+}
+
+.back-link a {
+    color: #a4b0cb;
 }
 
 input[type=text], input[type=date], select {
@@ -62,7 +76,6 @@ label {
     margin-right: 15px;
 }
 
-/**********************************************************************************************************************/
 .notify {
     background-color: #e3f7fc;
     color: #555;
@@ -80,7 +93,7 @@ label {
     border-color: #fad9d7;
 }
 
-button[type=submit] {
+button {
     width: 100%;
     margin-top: 20px;
     padding: 10px 0;
@@ -119,7 +132,7 @@ button[type=submit] {
     clear: both;
 }
 
-button[type=submit]:hover {
+button:hover {
     background: -moz-linear-gradient(
             top,
             #a4b0cb 0%,
@@ -129,5 +142,3 @@ button[type=submit]:hover {
             from(#a4b0cb),
             to(#b9c5dd));
 }
-
-/**********************************************************************************************************************/
