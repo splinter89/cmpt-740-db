@@ -36,8 +36,8 @@
   },
   "scripts": {
     "atlas-skeleton-generate": "php vendor/atlas/cli/bin/atlas-skeleton.php config/atlas_skeleton.php",
-    "random-insert": "ab -n 100 -c 10 -l http://740project.lc/random/insert/",
-    "random-select": "ab -n 300 -c 10 -l http://740project.lc/random/select/",
-    "random-update": "ab -n 100 -c 10 -l http://740project.lc/random/update/"
+    "random-insert": "ab -n 100 -c 10 -l http://app.lc/random/insert/",
+    "random-select": "ab -n 300 -c 10 -l http://app.lc/random/select/",
+    "random-update": "ab -n 100 -c 10 -l http://app.lc/random/update/"
   }
 }
