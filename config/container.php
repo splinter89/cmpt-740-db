@@ -100,5 +100,17 @@ $containerBuilder = (new ContainerBuilder)
         'path.templates' => __DIR__.'/../templates/',
         'path.templates.cache' => __DIR__.'/../tmp/templates_cache/',
     ]);
+if (defined('IS_RUNNING_TESTS') && IS_RUNNING_TESTS) {
+    $containerBuilder->addDefinitions([
+        Atlas::class => function (ContainerInterface $c) {
+            return Atlas::new(
+                $c->get('db.dsn.default'),
+                $c->get('db.username'),
+                $c->get('db.password')
+            );
+        },
+        'db.dsn.default' => 'sqlite::memory:',
+    ]);
+}
 
 return $containerBuilder->build();
