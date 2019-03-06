@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="block">
+        <div class="title">Find Accommodation</div>
+
+        <form action="/accommodations/search/" method="get">
+            <div>City:
+                <select name="search[city]">
+                    {% for city in cities %}
+                        <option value="{{ city|e('html_attr') }}" {% if city == search.city %}selected="selected"{% endif %}>{{ city }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>Price:
+                <input type="text" name="search[price_from]" value="{{ search.price_from|e('html_attr') }}" style="width:100px;">
+                &ndash;
+                <input type="text" name="search[price_to]" value="{{ search.price_to|e('html_attr') }}" style="width:100px;">
+            </div>
+            <div>Type:
+                <select name="search[type]">
+                    {% for type in types %}
+                        <option value="{{ type|e('html_attr') }}" {% if type == search.type %}selected="selected"{% endif %}>{{ type }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label><input type="checkbox" name="search[has_washer]" value="1" {% if search.has_washer %}checked="checked"{% endif %}>washer</label>
+                <label><input type="checkbox" name="search[has_wifi]" value="1" {% if search.has_wifi %}checked="checked"{% endif %}>wifi</label>
+                <label><input type="checkbox" name="search[has_tv]" value="1" {% if search.has_tv %}checked="checked"{% endif %}>tv</label>
+            </div>
+            <button type="submit">search</button>
+        </form>
+
+        <div style="margin-top:35px;">
+            {% if search_results %}
+                <div class="title">Search Results: {{ search_results|length }}</div>
+                <table cellpadding="0" cellspacing="0" style="text-align:left;">
+                    {% for row in search_results %}
+                        <tr><td><pre>{{ row }}</pre></td></tr>
+                    {% endfor %}
+                </table>
+            {% elseif search %}
+                <div style="text-align:left;">Sorry, no results</div>
+            {% endif %}
+        </div>
+
+        <div class="back-link"><a href="/">Back</a></div>
+    </div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="block">
+        <div class="title">Add Accommodation</div>
+
+        <form action="/accommodations/" method="post">
+            <div>Host user id: <input type="text" name="accommodation[host_user_id]" value="{{ accommodation.host_user_id|e('html_attr') }}"></div>
+            <div>City:
+                <select name="accommodation[city]">
+                    {% for city in cities %}
+                        <option value="{{ city|e('html_attr') }}" {% if city == accommodation.city %}selected="selected"{% endif %}>{{ city }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>Address: <input type="text" name="accommodation[address]" value="{{ accommodation.address|e('html_attr') }}"></div>
+            <div>Price: <input type="text" name="accommodation[price]" value="{{ accommodation.price|e('html_attr') }}"></div>
+            <div>Type:
+                <select name="accommodation[type]">
+                    {% for type in types %}
+                        <option value="{{ type|e('html_attr') }}" {% if type == accommodation.type %}selected="selected"{% endif %}>{{ type }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label><input type="checkbox" name="accommodation[has_washer]" value="1" {% if accommodation.has_washer %}checked="checked"{% endif %}>washer</label>
+                <label><input type="checkbox" name="accommodation[has_wifi]" value="1" {% if accommodation.has_wifi %}checked="checked"{% endif %}>wifi</label>
+                <label><input type="checkbox" name="accommodation[has_tv]" value="1" {% if accommodation.has_tv %}checked="checked"{% endif %}>tv</label>
+            </div>
+            <button type="submit">add new accommodation</button>
+        </form>
+
+        {% if new_accommodation_id %}
+            <div>new record id: {{ new_accommodation_id }}</div>
+        {% endif %}
+
+        <div class="back-link"><a href="/">Back</a></div>
+    </div>
+{% endblock %}

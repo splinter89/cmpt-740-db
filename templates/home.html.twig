@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="block">
+        <div class="title">Choose an action</div>
+
+        <div>
+            <button onclick="location.href = '/users/';">create user</button>
+            <button onclick="location.href = '/accommodations/';">add accommodation</button>
+            <button onclick="location.href = '/accommodations/search/';">search accommodation</button>
+            <button onclick="location.href = '/reservations/';">add reservation</button>
+        </div>
+    </div>
+{% endblock %}

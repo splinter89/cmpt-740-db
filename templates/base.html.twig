@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Booking of Accommodations</title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+
+{% if used_connections %}
+    <div class="connection_name notify" title="Used Connections">{{ used_connections|join(', ') }}</div>
+{% endif %}
+{% if db_error %}
+    <div class="connection_error notify notify-red">ERROR: {{ db_error }}</div>
+{% endif %}
+
+<div class="main-container">
+    {% block main %}{% endblock %}
+</div>
+</body>
+</html>

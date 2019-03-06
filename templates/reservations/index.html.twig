@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="block">
+        <div class="title">Add Reservation</div>
+
+        <form action="/reservations/" method="post">
+            <div>Accommodation id: <input type="text" name="reservation[accommodation_id]" value="{{ reservation.accommodation_id|e('html_attr') }}"></div>
+            <div>Guest user id: <input type="text" name="reservation[guest_user_id]" value="{{ reservation.guest_user_id|e('html_attr') }}"></div>
+            <div>Dates:
+                <input type="date" name="reservation[date_from]" value="{{ reservation.date_from|e('html_attr') }}">
+                &ndash;
+                <input type="date" name="reservation[date_to]" value="{{ reservation.date_to|e('html_attr') }}">
+            </div>
+            <button type="submit">add new reservation</button>
+        </form>
+
+        {% if new_reservation_id %}
+            <div>new record id: {{ new_reservation_id }}</div>
+        {% endif %}
+
+        <div class="back-link"><a href="/">Back</a></div>
+    </div>
+{% endblock %}

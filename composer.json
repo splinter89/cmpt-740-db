@@ -1,0 +1,43 @@
+{
+  "name": "splinter89/db-replication",
+  "description": "Online System for Booking of Accommodations",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    },
+    "files": [
+      "src/functions.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "App\\Test\\": "tests/"
+    }
+  },
+  "require": {
+    "php": "^7.1",
+    "ext-json": "*",
+    "ext-pdo": "*",
+
+    "php-di/php-di": "^6.0",
+    "relay/relay": "2.x-dev",
+    "zendframework/zend-diactoros": "^2.1",
+    "middlewares/fast-route": "^1.2",
+    "middlewares/request-handler": "^1.4",
+    "middlewares/trailing-slash": "^1.1",
+    "narrowspark/http-emitter": "^0.7",
+    "atlas/orm": "^3.0",
+    "twig/twig": "^2.0"
+  },
+  "require-dev": {
+    "atlas/cli": "^2.0",
+    "phpunit/phpunit": "^8.0"
+  },
+  "scripts": {
+    "atlas-skeleton-generate": "php vendor/atlas/cli/bin/atlas-skeleton.php config/atlas_skeleton.php",
+    "random-insert": "ab -n 100 -c 10 -l http://740project.lc/random/insert/",
+    "random-select": "ab -n 300 -c 10 -l http://740project.lc/random/select/",
+    "random-update": "ab -n 100 -c 10 -l http://740project.lc/random/update/"
+  }
+}

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="block">
+        <div class="title">Create User</div>
+
+        <form action="/users/" method="post">
+            <div>Name: <input type="text" name="user[name]" value="{{ user.name|e('html_attr') }}"></div>
+            <button type="submit">add new user</button>
+        </form>
+
+        {% if new_user_id %}
+            <div>new record id: {{ new_user_id }}</div>
+        {% endif %}
+
+        <div class="back-link"><a href="/">Back</a></div>
+    </div>
+{% endblock %}
