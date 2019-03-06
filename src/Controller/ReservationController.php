@@ -41,24 +41,13 @@ class ReservationController extends BaseController
         $fields['date_to'] = max($fields['date_from'], $fields['date_to']);
         $fields['date_created'] = date('Y-m-d H:i:s');
 
-        $existing_reservations = $this->reservationRepository
-            ->select(['accommodation_id' => $fields['accommodation_id']])
-            ->fetchRecords();
-        $got_conflict_reservations = false;
-        foreach ($existing_reservations as $one) {
-            if (!(($fields['date_to'] < $one->date_from) || ($one->date_to < $fields['date_from']))) {
-                $got_conflict_reservations = true;
-                break;
-            }
-        }
-
         $new_reservation_id = '';
         $db_error = '';
-        if ($got_conflict_reservations) {
-            $db_error = 'Got conflicting reservations';
-        } else {
+        try {
             $new_reservation = $this->reservationRepository->create($fields);
             $new_reservation_id = $new_reservation->id;
+        } catch (\Throwable $t) {
+            $db_error = $t->getMessage();
         }
 
         return $this->render('reservations/index.html.twig', [

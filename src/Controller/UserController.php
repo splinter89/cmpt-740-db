@@ -35,11 +35,11 @@ class UserController extends BaseController
 
         $new_user_id = '';
         $db_error = '';
-        if (empty($fields['name'])) {
-            $db_error = 'User name is empty';
-        } else {
+        try {
             $new_user = $this->userRepository->create($fields);
             $new_user_id = $new_user->id;
+        } catch (\Throwable $t) {
+            $db_error = $t->getMessage();
         }
 
         return $this->render('users/index.html.twig', [

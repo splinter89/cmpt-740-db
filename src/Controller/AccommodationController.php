@@ -48,13 +48,11 @@ class AccommodationController extends BaseController
 
         $new_accommodation_id = '';
         $db_error = '';
-        if (empty($fields['address'])) {
-            $db_error = 'No address';
-        } elseif (empty($fields['price'])) {
-            $db_error = 'No price';
-        } else {
+        try {
             $new_accommodation = $this->accommodationRepository->create($fields);
             $new_accommodation_id = $new_accommodation->id;
+        } catch (\Throwable $t) {
+            $db_error = $t->getMessage();
         }
 
         return $this->render('accommodations/index.html.twig', [

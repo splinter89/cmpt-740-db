@@ -13,4 +13,21 @@ use PDOStatement;
 
 class UserEvents extends MapperEvents
 {
+    public function beforeInsert(Mapper $mapper, Record $record): void
+    {
+        $this->assertValid($record);
+    }
+
+    public function beforeUpdate(Mapper $mapper, Record $record): void
+    {
+        $this->assertValid($record);
+    }
+
+    /**
+     * @param UserRecord|Record $record
+     */
+    protected function assertValid($record): void
+    {
+        if (empty($record->name)) throw new \UnexpectedValueException('User name is empty.');
+    }
 }
